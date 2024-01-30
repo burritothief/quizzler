@@ -72,7 +72,7 @@
   \begin{samepage}
     \item[] <VAR>q.prompt.pretext | tex_escape </VAR>
     \begin{quote}
-      <VAR>q.prompt.text | tex_escape </VAR>
+      <VAR>q.prompt.text | set_uniform_underscore_length | tex_escape </VAR>
     \end{quote}
     \item[] <VAR>q.prompt.question | tex_escape </VAR>
     \begin{choices}
@@ -105,7 +105,15 @@
     \begin{itemize}
       \setlength\labelsep{5pt}%
       <BLOCK> for note in q.prompt.notes </BLOCK>
+      <BLOCK> if note is iterable and note is not string </BLOCK>
+      \begin{itemize}
+        <BLOCK> for subnote in note </BLOCK>
+        \item <VAR> subnote | tex_escape </VAR>
+              <BLOCK> endfor </BLOCK>
+      \end{itemize}
+      <BLOCK> else </BLOCK>
       \item <VAR> note | tex_escape </VAR>
+            <BLOCK> endif </BLOCK>
             <BLOCK> endfor </BLOCK>
     \end{itemize}
     \item[] <VAR> q.prompt.question | tex_escape </VAR>

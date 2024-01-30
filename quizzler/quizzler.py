@@ -101,7 +101,7 @@ class ExercptPrompt(Prompt):
 @dataclass
 class RhetoricalAnalysisPrompt(Prompt):
     pretext: str
-    notes: list[str]
+    notes: list[str | list[str]]
     question: str
 
 
