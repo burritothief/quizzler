@@ -1,0 +1,8 @@
+{
+    // "latex-workshop.latex.outDir": "%DIR%/aux",
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.watch.files.ignore": ["**/templates/*.tex"],
+    "[json]": {
+        "editor.formatOnSave": true
+    }
+}
