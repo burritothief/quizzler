@@ -5,10 +5,27 @@
 \usepackage{enumitem}
 \usepackage[nodayofweek]{datetime}
 \usepackage{color,fancyhdr,ifthen,amssymb,amsfonts,amsmath}
+\usepackage[tikz]{multicolrule}
+\usepackage{hyperref}
+\usepackage{caption}
 \pagestyle{fancy}
+
+\hypersetup{
+    hidelinks,
+    pdftitle={SAT Reading \& Writing Quiz},
+    pdfauthor={Jeff},  
+    pdfsubject={SAT study and test preparation},
+    bookmarks=true,
+    bookmarksopen=true,   
+    bookmarksnumbered=true,      
+    % bookmarksopenlevel=1,                 
+    % pdfstartview={Fit},           
+    % pdfpagemode={UseOutlines},  
+}
 
 \setlength{\headheight}{12.09006pt}
 \setlength{\topmargin}{-.5in} \setlength{\textheight}{9.25in}
+% \setlength{\columnsep}{15pt}
 % \setlength{\oddsidemargin}{0in} \setlength{\textwidth}{6.8in}
 
 \newcounter{question}
@@ -16,7 +33,9 @@
 \setcounter{choice}{1}
 \newenvironment{question}[1][]{%
   \stepcounter{question}%
-  \noindent\colorbox{black}{\textcolor{white}{\makebox[1.5em][c]{\thequestion}}}%
+  \noindent\colorbox{black}{\textcolor{white}{\makebox[1.5em][c]{
+    \hyperlink{#1-A}{\hypertarget{{#1}}{\thequestion}}
+  }}}%
   \colorbox{lightgray}{\phantom{\rule{\columnwidth-1.5em-\columnsep}{\heightof{1}}}\makebox[0pt][r]{\textit{\footnotesize#1}}}\par
   \begin{list}{}{%
     \setlength\itemindent{0pt}%
@@ -53,80 +72,103 @@
 
 
 \begin{document}
-\twocolumn
-<BLOCK> for q in questions </BLOCK>
-<BLOCK> if q.prompt.__class__.__name__ == 'BasicPrompt' </BLOCK>
-\begin{question}[<VAR>q.identifier</VAR>]
-  \begin{samepage}
-    \item[] <VAR> q.prompt.text | set_uniform_underscore_length | tex_escape </VAR>
-    \item[] <VAR> q.prompt.question | tex_escape </VAR>
-    \begin{choices}
-      <BLOCK> for choice in q.choices </BLOCK>
-      \item <VAR> choice | tex_escape </VAR>
-      <BLOCK> endfor </BLOCK>
-    \end{choices}
-  \end{samepage}
-\end{question}
-<BLOCK> elif q.prompt.__class__.__name__ == 'ExercptPrompt' </BLOCK>
-\begin{question}[<VAR>q.identifier</VAR>]
-  \begin{samepage}
-    \item[] <VAR>q.prompt.pretext | tex_escape </VAR>
-    \begin{quote}
-      <VAR>q.prompt.text | set_uniform_underscore_length | tex_escape </VAR>
-    \end{quote}
-    \item[] <VAR>q.prompt.question | tex_escape </VAR>
-    \begin{choices}
-      <BLOCK> for choice in q.choices </BLOCK>
-      \item <VAR> choice | tex_escape </VAR>
-      <BLOCK> endfor </BLOCK>
-    \end{choices}
-  \end{samepage}
-\end{question}
-<BLOCK> elif q.prompt.__class__.__name__ == 'CrossTextPrompt' </BLOCK>
-\begin{question}[<VAR>q.identifier</VAR>]
-  \begin{samepage}
-    \item[] \textbf{Text 1}
-    \item[] <VAR>q.prompt.text1 | tex_escape </VAR>
-    \item[] \textbf{Text 2}
-    \item[] <VAR> q.prompt.text2 | tex_escape </VAR>
-    \item[] <VAR> q.prompt.question | tex_escape </VAR>
-    \begin{choices}
-      <BLOCK> for choice in q.choices </BLOCK>
-      \item <VAR> choice | tex_escape </VAR>
-      <BLOCK> endfor </BLOCK>
-    \end{choices}
-  \end{samepage}
-\end{question}
-<BLOCK> elif q.prompt.__class__.__name__ == 'RhetoricalAnalysisPrompt' </BLOCK>
-\begin{question}[<VAR>q.identifier</VAR>]
-  \begin{samepage}
-    \item[] <VAR>q.prompt.pretext | tex_escape </VAR>
-    \renewcommand\labelitemi{{\boldmath$\cdot$}}
-    \begin{itemize}
-      \setlength\labelsep{5pt}%
-      <BLOCK> for note in q.prompt.notes </BLOCK>
-      <BLOCK> if note is iterable and note is not string </BLOCK>
+\pdfbookmark{Quiz}{quiz}
+\begin{multicols}{2}
+  \SetMCRule{line-style=dots}
+  <BLOCK> for q in questions </BLOCK>
+  <BLOCK> if q.prompt.__class__.__name__ == 'BasicPrompt' </BLOCK>
+  \begin{question}[<VAR>q.identifier</VAR>]
+    \begin{samepage}
+      \item[] <VAR> q.prompt.text | set_uniform_underscore_length | tex_escape </VAR>
+      \item[] <VAR> q.prompt.question | tex_escape </VAR>
+      \begin{choices}
+        <BLOCK> for choice in q.choices </BLOCK>
+        \item <VAR> choice | tex_escape </VAR>
+        <BLOCK> endfor </BLOCK>
+      \end{choices}
+    \end{samepage}
+  \end{question}
+  <BLOCK> elif q.prompt.__class__.__name__ == 'ExercptPrompt' </BLOCK>
+  \begin{question}[<VAR>q.identifier</VAR>]
+    \begin{samepage}
+      \item[] <VAR>q.prompt.pretext | tex_escape </VAR>
+      \begin{quote}
+        <VAR>q.prompt.text | set_uniform_underscore_length | tex_escape </VAR>
+      \end{quote}
+      \item[] <VAR>q.prompt.question | tex_escape </VAR>
+      \begin{choices}
+        <BLOCK> for choice in q.choices </BLOCK>
+        \item <VAR> choice | tex_escape </VAR>
+        <BLOCK> endfor </BLOCK>
+      \end{choices}
+    \end{samepage}
+  \end{question}
+  <BLOCK> elif q.prompt.__class__.__name__ == 'CrossTextPrompt' </BLOCK>
+  \begin{question}[<VAR>q.identifier</VAR>]
+    \begin{samepage}
+      \item[] \textbf{Text 1}
+      \item[] <VAR>q.prompt.text1 | tex_escape </VAR>
+      \item[] \textbf{Text 2}
+      \item[] <VAR> q.prompt.text2 | tex_escape </VAR>
+      \item[] <VAR> q.prompt.question | tex_escape </VAR>
+      \begin{choices}
+        <BLOCK> for choice in q.choices </BLOCK>
+        \item <VAR> choice | tex_escape </VAR>
+        <BLOCK> endfor </BLOCK>
+      \end{choices}
+    \end{samepage}
+  \end{question}
+  <BLOCK> elif q.prompt.__class__.__name__ == 'RhetoricalAnalysisPrompt' </BLOCK>
+  \begin{question}[<VAR>q.identifier</VAR>]
+    \begin{samepage}
+      \item[] <VAR>q.prompt.pretext | tex_escape </VAR>
+      \renewcommand\labelitemi{{\boldmath$\cdot$}}
       \begin{itemize}
-        <BLOCK> for subnote in note </BLOCK>
-        \item <VAR> subnote | tex_escape </VAR>
+        \setlength\labelsep{5pt}%
+        <BLOCK> for note in q.prompt.notes </BLOCK>
+        <BLOCK> if note is iterable and note is not string </BLOCK>
+        \begin{itemize}
+          <BLOCK> for subnote in note </BLOCK>
+          \item <VAR> subnote | tex_escape </VAR>
+                <BLOCK> endfor </BLOCK>
+        \end{itemize}
+        <BLOCK> else </BLOCK>
+        \item <VAR> note | tex_escape </VAR>
+              <BLOCK> endif </BLOCK>
               <BLOCK> endfor </BLOCK>
       \end{itemize}
-      <BLOCK> else </BLOCK>
-      \item <VAR> note | tex_escape </VAR>
-            <BLOCK> endif </BLOCK>
-            <BLOCK> endfor </BLOCK>
-    \end{itemize}
-    \item[] <VAR> q.prompt.question | tex_escape </VAR>
-    \begin{choices}
-      <BLOCK> for choice in q.choices </BLOCK>
-      \item <VAR> choice | tex_escape </VAR>
-      <BLOCK> endfor </BLOCK>
-    \end{choices}
-  \end{samepage}
-\end{question}
-<BLOCK> else </BLOCK>
-<BLOCK> endif </BLOCK>
-<BLOCK> endfor </BLOCK>
+      \item[] <VAR> q.prompt.question | tex_escape </VAR>
+      \begin{choices}
+        <BLOCK> for choice in q.choices </BLOCK>
+        \item <VAR> choice | tex_escape </VAR>
+        <BLOCK> endfor </BLOCK>
+      \end{choices}
+    \end{samepage}
+  \end{question}
+  <BLOCK> else </BLOCK>
+  <BLOCK> endif </BLOCK>
+  <BLOCK> endfor </BLOCK>
+\end{multicols}
 
+\vspace*{\fill}
+\begin{center}
+  \huge\textbf{STOP}
+\end{center}
 
+%%%%%%%%%%%%%%
+% Answer Key %
+%%%%%%%%%%%%%%
+\newpage
+\onecolumn
+\pdfbookmark{Answer Key}{answer-key}
+\section*{Answer Key}
+\begin{enumerate}
+  <BLOCK> for q in questions </BLOCK>
+  \item \hypertarget{<VAR>q.identifier</VAR>-A}{\hyperlink{<VAR>q.identifier</VAR>}{\textbf{(<VAR>q.solution.choice.to_string()</VAR>)}}} <VAR> q.solution.explanation | tex_escape </VAR>
+        <BLOCK> endfor </BLOCK>
+\end{enumerate}
 \end{document}
+
+
+
+
