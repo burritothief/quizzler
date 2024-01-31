@@ -170,7 +170,12 @@ class SATQuestion:
         with open(filename, "r") as f:
             data = json.load(f)
 
-        return [cls.from_json(question) for question in data]
+        question_set = [cls.from_json(question) for question in data]
+
+        assert set([q.number for q in question_set]) == set(
+            [i + 1 for i in range(len(question_set))]
+        ), f"Question numbers for a given set of questions must be sequential and unique: '{filename}'"
+        return question_set
 
     @classmethod
     def from_json(cls, json: dict) -> "SATQuestion":
