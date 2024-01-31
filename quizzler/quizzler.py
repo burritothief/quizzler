@@ -70,6 +70,9 @@ class AnswerChoice(str, Enum):
     C = "C"
     D = "D"
 
+    def to_string(self):
+        return self.value
+
 
 @dataclass
 class Solution:
